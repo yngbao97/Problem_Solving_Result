@@ -25,7 +25,7 @@ public class Main {
 			boolean correct = true;
 			Node root = new Node('r');
 
-			for (char[] str : input) {
+			here: for (char[] str : input) {
 
 				Node curr = root;
 				for (int j = 0; j < str.length; j++) {
@@ -35,8 +35,14 @@ public class Main {
 						next = new Node(c);
 						curr.next.put(c, next);
 					} else {
-						if (j == str.length-1) correct = false;
-						if (next.end) correct = false;
+						if (j == str.length-1) {
+							correct = false;
+							break here;
+						}
+						if (next.end) {
+							correct = false;
+							break here;
+						}
 					}
 					curr = next;
 					if (j == str.length-1) curr.end = true;
