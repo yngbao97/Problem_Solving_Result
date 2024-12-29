@@ -17,58 +17,61 @@ public class Main {
 		for (int tc = 0; tc < T; tc++) {
 
 			String[] input = br.readLine().split(" ");
-			int n = Integer.parseInt(input[0]);		// 지점의 개수
-			int m = Integer.parseInt(input[1]);		// 도로의 개수
-			int w = Integer.parseInt(input[2]);		// 웜홀의 개수
+			int n = Integer.parseInt(input[0]);
+			int m = Integer.parseInt(input[1]);
+			int w = Integer.parseInt(input[2]);
 
-			// 인접행렬 초기화
-			int[][] adj = new int[n+1][n+1];
-			for (int i = 0; i <= n; i++) {
-				Arrays.fill(adj[i], 1_000_000_000);
+			List<Edge> edges = new ArrayList<>();
+
+			for (int i = 0; i < m + w; i++) {
+				st = new StringTokenizer(br.readLine(), " ");
+				int start = Integer.parseInt(st.nextToken());
+				int end = Integer.parseInt(st.nextToken());
+				int time = Integer.parseInt(st.nextToken());
+
+				if (i >= m) {
+					edges.add(new Edge(start, end, -time));
+				} else {
+					edges.add(new Edge(start, end, time));
+					edges.add(new Edge(end, start, time));
+				}
 			}
 
-			// 도로 입력
-			for (int i = 0; i < m; i++) {
-				String[] info = br.readLine().split(" ");
-				int a = Integer.parseInt(info[0]);
-				int b = Integer.parseInt(info[1]);
-				int t = Integer.parseInt(info[2]);
+			int[] minTime = new int[n+1];
+			boolean cycle = false;
 
-				adj[a][b] = Math.min(adj[a][b], t);
-				adj[b][a] = Math.min(adj[b][a], t);
-			}
+			out: for (int i = 0; i <= n; i++) {
+				for (Edge e : edges) {
+					if (minTime[e.end] > minTime[e.start] + e.time) {
+						minTime[e.end] = minTime[e.start] + e.time;
 
-			// 웜홀 입력
-			for (int i = 0; i < w; i++) {
-				String[] info = br.readLine().split(" ");
-				int start = Integer.parseInt(info[0]);
-				int end = Integer.parseInt(info[1]);
-				int t = Integer.parseInt(info[2]);
-
-				adj[start][end] = Math.min(adj[start][end], -t);
-			}
-
-			boolean flag = false;
-			out: for (int v = 1; v <= n; v++) {
-				for (int s = 1; s <= n; s++) {
-					if (v == s) continue;
-					for (int e = 1; e <= n; e++) {
-						if (v == e) continue;
-						adj[s][e] = Math.min(adj[s][e], adj[s][v] + adj[v][e]);
-						if (s == e && adj[s][e] < 0) {
-							flag = true;
+						if (i == n) {
+							cycle = true;
 							break out;
 						}
 					}
 				}
 			}
 
-			if (flag) bw.write("YES\n");
+			if (cycle) bw.write("YES\n");
 			else bw.write("NO\n");
 		}
 		
 		bw.flush();
 		bw.close();
 		br.close();
+	}
+}
+
+class Edge {
+	int start;
+	int end;
+	int time;
+
+	Edge() {}
+	Edge(int start, int end, int time) {
+		this.start = start;
+		this.end = end;
+		this.time = time;
 	}
 }
