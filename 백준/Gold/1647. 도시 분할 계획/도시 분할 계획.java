@@ -16,35 +16,37 @@ public class Main {
 		String[] input = br.readLine().split(" ");
 		int n = Integer.parseInt(input[0]);
 		int m = Integer.parseInt(input[1]);
-
-		p = new int[n+1];
-		for (int i = 1; i <= n; i++) p[i] = i;
-
+		
 		Edge[] edges = new Edge[m];
+		
 		for (int i = 0; i < m; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
-			int left = Integer.parseInt(st.nextToken());
-			int right = Integer.parseInt(st.nextToken());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
 			int cost = Integer.parseInt(st.nextToken());
-
-			edges[i] = new Edge(left, right, cost);
+			
+			edges[i] = new Edge(a, b, cost);
 		}
+		
+		p = new int[n+1];
+		for (int i = 0; i <=n; i++) p[i] = i;
+		
 		Arrays.sort(edges);
-
-		int sum = 0;
-		int cnt = 0;
-		for (Edge e : edges) {
-			if (cnt >= n-2) break;
-			int left = findSet(e.left);
-			int right = findSet(e.right);
-			if (left != right) {
-				p[left] = right;
-				cnt++;
-				sum += e.cost;
+		int count = 0;
+		int answer = 0;
+		
+		for (int i = 0; i < m && count < n - 2; i++) {
+			Edge e = edges[i];
+			int a = findSet(e.a);
+			int b = findSet(e.b);
+			if (a != b) {
+				unionSet(a, b);
+				count++;
+				answer += e.cost;
 			}
 		}
-
-		bw.write(String.valueOf(sum));
+		
+		bw.write(String.valueOf(answer));
 		bw.flush();
 		bw.close();
 		br.close();
@@ -54,20 +56,24 @@ public class Main {
 		if (p[num] == num) return num;
 		return p[num] = findSet(p[num]);
 	}
+	
+	private static void unionSet(int a, int b) {
+		p[a] = b;
+	}
 }
 
-class Edge implements Comparable<Edge> {
-	int left;
-	int right;
+class Edge implements Comparable<Edge>{
+	int a;
+	int b;
 	int cost;
-
+	
 	Edge() {}
-	Edge(int left, int right, int cost) {
-		this.left = left;
-		this.right = right;
+	Edge(int a, int b, int cost) {
+		this.a = a;
+		this.b = b;
 		this.cost = cost;
 	}
-
+	
 	@Override
 	public int compareTo(Edge o) {
 		return Integer.compare(this.cost, o.cost);
