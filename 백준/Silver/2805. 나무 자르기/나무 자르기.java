@@ -6,8 +6,9 @@ public class Main {
 	static BufferedReader br;
 	static BufferedWriter bw;
 	static StringTokenizer st;
-	static Long[] trees;
+	static int[] trees;
 	static int m;
+	static int answer;
 
 	public static void main(String[] args) throws Exception {
 
@@ -16,17 +17,16 @@ public class Main {
 
 		String[] input = br.readLine().split(" ");
 		int n = Integer.parseInt(input[0]);
-		trees = new Long[n];
+		trees = new int[n];
 		m = Integer.parseInt(input[1]);
 		st = new StringTokenizer(br.readLine(), " ");
-		long max = 0;
+		int max = 0;
 		for (int i = 0; i < n; i++) {
-			trees[i] = Long.parseLong(st.nextToken());
+			trees[i] = Integer.parseInt(st.nextToken());
 			max = Math.max(max, trees[i]);
 		}
-		Arrays.sort(trees, Collections.reverseOrder());
 
-		int answer = binarySearch(1, (int)max);
+		binarySearch(1, (int)max);
 
 		bw.write(String.valueOf(answer));
 		bw.flush();
@@ -34,23 +34,24 @@ public class Main {
 		br.close();
 	}
 
-	private static int binarySearch(int low, int high) {
-		if (low > high) {
-			return high;
-		}
+	private static void binarySearch(int low, int high) {
+		if (low > high) return;
 
 		int mid = (low + high) / 2;
 
-		if (isPossible(mid)) return binarySearch(mid + 1, high);
-		else return binarySearch(low, mid - 1);
+		long sum = cut(mid);
+		if (sum == m) answer = mid;
+		else if (sum > m) {
+			answer = mid;
+			binarySearch(mid + 1, high);
+		} else binarySearch(low, mid - 1);
 	}
 
-	private static boolean isPossible(int height) {
+	private static long cut(int height) {
 		long sum = 0;
 		for (long tree : trees) {
-			sum += (tree-height);
-			if (sum >= m) return true;
+			sum += Math.max(tree-height, 0);
 		}
-		return false;
+		return sum;
 	}
 }
