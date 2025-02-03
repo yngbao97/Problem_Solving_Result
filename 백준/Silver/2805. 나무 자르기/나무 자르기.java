@@ -19,10 +19,14 @@ public class Main {
 		trees = new Long[n];
 		m = Integer.parseInt(input[1]);
 		st = new StringTokenizer(br.readLine(), " ");
-		for (int i = 0; i < n; i++) trees[i] = Long.parseLong(st.nextToken());
+		long max = 0;
+		for (int i = 0; i < n; i++) {
+			trees[i] = Long.parseLong(st.nextToken());
+			max = Math.max(max, trees[i]);
+		}
 		Arrays.sort(trees, Collections.reverseOrder());
 
-		int answer = binarySearch(1, 1000000000);
+		int answer = binarySearch(1, (int)max);
 
 		bw.write(String.valueOf(answer));
 		bw.flush();
