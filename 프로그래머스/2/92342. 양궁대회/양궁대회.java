@@ -27,7 +27,7 @@ class Solution {
     
     public void dfs(int lSum, int aSum, int cnt, int target, int n, int[] info) {
         int idx = 10-target;
-        // System.out.println("-------target: " + target + ", idx: " + idx + ", cnt: " + cnt + ", lion: " + lSum + ", apeach: " + aSum);
+
         int gap = lSum - (aSum + full[idx]);
         if (target == 0 && (gap >= max)) {
             if (gap == max && !check()) return;
@@ -35,15 +35,12 @@ class Solution {
             if (max == 0) return;
             lion[idx] = n - cnt;
             answer = Arrays.copyOf(lion, 11);
-            // System.out.println("max: " + max + ", " + Arrays.toString(answer));
+
             return;
         }
         
         if (target == 0) return;
         
-        // if (cnt > 0 && full[10-lion[0]] - full[(10-lion[0]) + (n-cnt)])
-        
-        // int idx = 10 - target;
         if (info[idx] < n - cnt) {
             lion[idx] = info[idx] + 1;
             dfs(lSum + target, aSum, cnt + lion[idx], target - 1, n, info);
@@ -62,6 +59,5 @@ class Solution {
             if (info[i] > 0) full[i] = full[i+1] + (10-i);
             else full[i] = full[i+1];
         }
-        // System.out.println(Arrays.toString(full));
     }
 }
