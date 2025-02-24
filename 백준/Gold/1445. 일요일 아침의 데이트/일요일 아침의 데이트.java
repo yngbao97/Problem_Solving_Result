@@ -43,14 +43,6 @@ public class Main {
             }
         }
 
-//        for (int i = 0; i < n; i++) System.out.println(Arrays.toString(forest[i]));
-//        for (int i = 0; i < n; i++) {
-//            for (int j = 0; j < m; j++) {
-//                System.out.print(Arrays.toString(dp[i][j]));
-//            }
-//            System.out.println();
-//        }
-
         PriorityQueue<Node> pq = new PriorityQueue<>();
 
         pq.add(new Node(start[0], start[1], 0, 0 ));
@@ -59,7 +51,6 @@ public class Main {
 
             Node curr = pq.poll();
 
-//            System.out.println("-----curr: " + curr.r + ", " + curr.c);
             for (int d = 0; d < 4; d++) {
                 int nr = curr.r + dr[d];
                 int nc = curr.c + dc[d];
@@ -68,18 +59,15 @@ public class Main {
 
                 if (nr < 0 || nr >= n || nc < 0 || nc >= m) continue;
 
-//                System.out.println("next: " + nr + ", " + nc + ": " + curr.compareTo(dp[nr][nc]));
-//                System.out.println(curr.gCnt+ ", " + curr.sCnt);
-
                 Node next = new Node(nr, nc, curr.gCnt, curr.sCnt);
-//                System.out.println(next.gCnt+ ", " + next.sCnt);
+
                 if (forest[nr][nc] == 'g') next.gCnt++;
                 else if (forest[nr][nc] == 's') next.sCnt++;
                 else if (forest[nr][nc] == 'F') {
                     bw.write(String.valueOf(next.gCnt) + " " + String.valueOf(next.sCnt));
                     break out;
                 }
-//                System.out.println(next.gCnt+ ", " + next.sCnt);
+
                 if (dp[nr][nc][0] < next.gCnt
                         || (dp[nr][nc][0] == next.gCnt && dp[nr][nc][1] <= next.sCnt)) continue;
 
