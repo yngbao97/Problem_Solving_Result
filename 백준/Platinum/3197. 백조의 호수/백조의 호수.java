@@ -11,7 +11,6 @@ public class Main {
 	static int[] a;
 	static int[] b;
 	static boolean[][] visited;
-	static boolean[][] added;
 	static Queue<int[]> will;
 	static int[] dr = new int[] {-1, 0, 1, 0};
 	static int[] dc = new int[] {0, 1, 0, -1};
@@ -49,12 +48,7 @@ public class Main {
 		}
 
 		visited = new boolean[n+2][m+2];
-		int s = will.size();
-		for (int i = 0; i < s; i++) {
-			int[] tmp = will.poll();
-			visited[tmp[0]][tmp[1]] = true;
-			will.add(tmp);
-		}
+
 		int day = 0;
 		while (!will.isEmpty()) {
 
