@@ -37,29 +37,23 @@ public class Main {
             }
         }
 
-//        System.out.println(Arrays.toString(length));
 
         bw.write(String.valueOf(dpIdx) + "\n");
-        int[] answer = new int[dpIdx--];
-        answer[dpIdx] = nums[maxIdx];
-//        System.out.println(nums[maxIdx] + "선택");
-        int cnt = dpIdx--;
-        int idx = maxIdx-1;
+        Stack<Integer> stack = new Stack<>();
+        stack.add(nums[maxIdx]);
+        int cnt = dpIdx - 1;    // 더 찾아야 하는 개수
+        int idx = maxIdx - 1;   // 탐색할 인덱스
 
         while (cnt > 0 && idx >= 0) {
             while (nums[idx] >= nums[maxIdx] || length[idx] != length[maxIdx] - 1) {
-//                System.out.println(nums[idx]);
                 idx--;
             }
-//            System.out.println(nums[idx] + "선택" + length[idx]);
-            answer[dpIdx--] = nums[idx];
-            maxIdx = idx;
-            idx--;
+            stack.add(nums[idx]);
+            maxIdx = idx--;
             cnt--;
         }
 
-//        System.out.println(Arrays.toString(answer));
-        for (int num : answer) bw.write(String.valueOf(num) + " ");
+        while (!stack.isEmpty()) bw.write(String.valueOf(stack.pop()) + " ");
 		bw.flush();
 		bw.close();
 		br.close();
