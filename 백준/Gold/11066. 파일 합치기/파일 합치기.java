@@ -22,14 +22,12 @@ public class Main {
 			for (int i = 1; i <= n; i++) preFiles[i] = Integer.parseInt(st.nextToken()) + preFiles[i-1];
 
 			int[][] dp = new int[n+1][n+1];
-			for (int i = 0; i <= n; i++) {
-				Arrays.fill(dp[i], Integer.MAX_VALUE);
-				dp[i][i] = 0;
-			}
 
 			for (int gap = 1; gap < n; gap++) {
 				for (int start = 1; start <= n - gap; start++) {
 					int end = start + gap;
+					dp[start][end] = Integer.MAX_VALUE;
+
 					for (int via = start; via < end; via++) {
 						dp[start][end] = Math.min(dp[start][end], dp[start][via] + dp[via+1][end]);
 					}
