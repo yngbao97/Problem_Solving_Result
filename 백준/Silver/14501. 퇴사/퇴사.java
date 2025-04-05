@@ -13,26 +13,17 @@ public class Main {
 		bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int n = Integer.parseInt(br.readLine());
-		int[] T = new int[n+1];
-		int[] P = new int[n+1];
+		int[] dp = new int[n+1];
 		for (int i = 1; i <= n; i++) {
-			st = new StringTokenizer(br.readLine(), " ");
-			T[i] = Integer.parseInt(st.nextToken());
-			P[i] = Integer.parseInt(st.nextToken());
-		}
-
-		int[][] dp = new int[n+1][n+1];
-		for (int i = 1; i <= n; i++) {
-			int end = i + T[i] - 1;
-			for (int j = 1; j <= n; j++) {
-				if (j < end) dp[i][j] = dp[i-1][j];
-				else if (j == end) dp[i][j] = Math.max(dp[i-1][j], dp[i][j-T[i]] + P[i]);
-				else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+			String[] input = br.readLine().split(" ");
+			int t = Integer.parseInt(input[0]);
+			int p = Integer.parseInt(input[1]);
+			for (int day = i+(t-1); day <= n; day++) {
+				dp[day] = Math.max(dp[i-1] + p, dp[day]);
 			}
-//			System.out.println(Arrays.toString(dp[i]));
 		}
 
-		bw.write(String.valueOf(dp[n][n]));
+		bw.write(String.valueOf(dp[n]));
 		bw.flush();
 		bw.close();
 		br.close();
